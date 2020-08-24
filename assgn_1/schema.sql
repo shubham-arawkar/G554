@@ -26,6 +26,8 @@ CREATE TABLE department(
 	mgr_start_date DATE,
 	PRIMARY KEY (dnumber),
 	FOREIGN KEY (mgr_ssn) REFERENCES employee(ssn)
+		ON DELETE SET NULL
+		ON UPDATE CASCADE
 );
 
 CREATE TABLE dept_locations(
@@ -33,6 +35,8 @@ CREATE TABLE dept_locations(
 	dlocation VARCHAR(255),
 	PRIMARY KEY (dnumber,dlocation),
 	FOREIGN KEY (dnumber) REFERENCES department(dnumber)
+		ON DELETE CASCADE
+		ON UPDATE CASCADE
 );
 
 CREATE TABLE project(
@@ -48,8 +52,12 @@ CREATE TABLE works_on(
 	pno BIGINT,
 	hours DOUBLE,
 	PRIMARY KEY(essn,pno),
-	FOREIGN KEY (essn) REFERENCES employee(ssn),
+	FOREIGN KEY (essn) REFERENCES employee(ssn)
+		ON DELETE CASCADE
+		ON UPDATE CASCADE,
 	FOREIGN KEY (pno) REFERENCES project(pnumber)
+		ON DELETE CASCADE
+		ON UPDATE CASCADE
 );
 
 CREATE TABLE dependent(
@@ -60,6 +68,8 @@ CREATE TABLE dependent(
 	relationship ENUM('Son','Daughter','Spouse','Parent'),
 	PRIMARY KEY(essn,dependent_name),
 	FOREIGN KEY(essn) REFERENCES employee(ssn)
+		ON DELETE CASCADE
+		ON UPDATE CASCADE
 );
 
 INSERT INTO employee VALUES
