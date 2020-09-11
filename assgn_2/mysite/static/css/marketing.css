@@ -1,0 +1,13 @@
+.logos-grid img {
+	display: block;
+	width: 60px;
+	margin: 0 auto;
+	filter:  grayscale(100%);
+	transition: filter 0.25s;
+}
+.logos-grid img:hover {
+	display: block;
+	width: 60px;
+	margin: 0 auto;
+	filter:  grayscale(0);
+}

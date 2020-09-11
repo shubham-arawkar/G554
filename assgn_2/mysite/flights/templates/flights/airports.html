@@ -1,0 +1,20 @@
+{% extends 'flights/base.html' %}
+{% load static%}
+{% load flight_inputs %}
+
+{% block content%}
+  <div class="uk-container">
+    <br>
+    <pre><code class="sql"> {{airports.query | sql_format}} </code></pre>
+
+    {% for airline in  airports %}
+      <article class="uk-article">
+          <h1 class="uk-article-title">{{airline.name}}</h1>
+          <h3>Departure</h3>
+          {% flights_table airline.src_air.all %}
+          <h3>Arrival</h3>
+          {% flights_table airline.des_air.all %}
+      </article>
+    {% endfor %}
+  </div>
+{% endblock %}

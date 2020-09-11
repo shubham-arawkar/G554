@@ -1,0 +1,18 @@
+{% extends 'flights/base.html' %}
+{% load static%}
+{% load flight_inputs %}
+
+{% block content%}
+<br/>
+  <div class="uk-container">
+    <h1>Bookings</h1>
+    <pre><code class="sql"> {{sql | sql_format}} </code></pre>
+    {% for customer,booking in  bookings %}
+      <article class="uk-article">
+          <h3 class="uk-article-title">{{customer.name}}</h3>
+          {% flights_table booking 'Hide'%}
+      </article>
+    {% endfor %}
+  </div>
+<br/>
+{% endblock %}

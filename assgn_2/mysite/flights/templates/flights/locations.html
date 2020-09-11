@@ -1,0 +1,34 @@
+{% extends 'flights/base.html' %}
+{% load static%}
+{% load flight_inputs %}
+
+{% block content%}
+  <div class="uk-container">
+    <br>
+    <pre><code class="sql"> {{locations.query | sql_format}} </code></pre>
+
+    {% for location in  locations %}
+      <article class="uk-article">
+          <h1 class="uk-article-title">{{location}}</h1>
+          <ul uk-accordion="collapsible: false">
+            <li>
+                <a class="uk-accordion-title" href="#">Departure</a>
+                <div class="uk-accordion-content">
+                    {% for airport in  location.airport_set.all %}
+                      {% flights_table airport.src_air.all %}
+                    {% endfor %}
+                </div>
+            </li>
+            <li>
+                <a class="uk-accordion-title" href="#">Arrival</a>
+                <div class="uk-accordion-content">
+                    {% for airport in  location.airport_set.all %}
+                      {% flights_table airport.des_air.all %}
+                    {% endfor %}
+                </div>
+            </li>
+        </ul>
+      </article>
+    {% endfor %}
+  </div>
+{% endblock %}

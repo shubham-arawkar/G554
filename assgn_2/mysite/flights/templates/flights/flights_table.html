@@ -1,0 +1,53 @@
+{% for flight in flights %}
+	    	<!-- <tr>
+	            <td>{{flight.flight.airline.name}}</td>
+	            <td>{{flight.start_time}}</td>
+	            <td>{{flight.src_air.name}}</td>
+	            <td>{{flight.des_air.name}}</td>
+		        <td><button class="uk-button uk-button-secondary"> Book @ {{flight.fare}} </button></td>
+	        </tr> -->
+	<div>
+		<div class="uk-card uk-card-default">
+			<div class="uk-card-header uk-text-center">
+		        <div class="uk-grid-small" uk-grid>
+		        	<div class="uk-width-auto">
+		        		<img width="50" height="50" src="/{{flight.flight.airline.upload}}">
+		        	</div>
+				    <div class="uk-width-1-6 uk-text-center">
+				    	    <h3 class="uk-card-title uk-margin-remove-bottom">{{flight.flight.airline.name}}</h3>
+		                	<p class="uk-text-meta uk-margin-remove-top">{{flight.flight.flight_id}}</p>
+				    </div>
+				    <div class="uk-width-1-6 uk-text-center">
+				    	    <h3 class="uk-card-title uk-margin-remove-bottom">{{flight.src_air.location.state}}</h3>
+		                	<p class="uk-text-meta uk-margin-remove-top truncate">{{flight.src_air.name}}</p>
+				    </div>
+				    <span uk-icon="icon: arrow-right; ratio: 1.7" style="padding:0;margin-right: -17px;margin-left: -17px"></span>
+				    <div class="uk-width-1-6 uk-text-center">
+				    	    <h3 class="uk-card-title uk-margin-remove-bottom">{{flight.des_air.location.state}}</h3>
+		                	<p class="uk-text-meta uk-margin-remove-top truncate">{{flight.des_air.name}}</p>
+				    </div>
+				    <div class="uk-width-1-6 uk-text-center">
+				    	    <h3 class="uk-card-title uk-margin-remove-bottom">{{flight.start_time | date:'H:i' }} - {{flight.end_time | date:'H:i' }}</h3>
+		                	<p class="uk-text-meta uk-margin-remove-top truncate">
+		                		{{ flight.start_time|date:'d M' }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ flight.end_time|date:'d M' }}
+		                	</p>
+				    </div>
+					<div class="uk-width-1-6 uk-text-center">
+						<h3 class="uk-card-title uk-margin-remove-bottom">{{flight.fare}}</h3>
+						<p class="uk-text-meta uk-margin-remove-top truncate">INR</p>
+				    </div>
+				    {% if not hide_booking %}
+				    <div class="uk-width-auto">
+		        		<form method="POST" action="/flights/bookings">
+		        			{% csrf_token %}
+		        			<input type="hidden" name="schedule_id" value="{{flight.schedule_id}}"/>
+		        			<button class="uk-button uk-button-primary uk-border-rounded">Book</button>
+		        		</form>
+		        	</div>
+		        	{% endif %}
+		        </div>
+		    </div>
+		</div>
+	</div>
+{% endfor %} 
+  

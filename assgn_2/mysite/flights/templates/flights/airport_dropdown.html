@@ -1,0 +1,14 @@
+<div class="uk-margin">
+    <label class="uk-form-label" for="form-stacked-select"> {{label}} </label>
+    <div class="uk-form-controls">
+        <select class="uk-select uk-border-rounded" name="{{name}}">
+        	{% for airport in airports %}
+			    <option class="truncate" value="{{airport.airport_id}}" 
+			    	{% if  airport.airport_id == value %}
+					    selected 
+					{% endif %}
+			    > {{airport}} </option>
+			{% endfor %}
+        </select>
+    </div>
+</div>

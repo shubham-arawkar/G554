@@ -1,0 +1,33 @@
+<div class="uk-margin">
+	<script>
+		function status(response) {
+		  if (response.status >= 200 && response.status < 300) {
+		    return Promise.resolve(response)
+		  } else {
+		    return Promise.reject(new Error(response.statusText))
+		  }
+		}
+
+		function json(response) {
+		  return response.json()
+		}
+
+		function onCustomerSelect(elem){
+			fetch("/flights/setcustomer/"+elem.options[elem.selectedIndex].value).then(status).then(json).then(function(data){
+				UIkit.notification({message: "<span uk-icon=\'icon: check\'></span> "+data.message})
+			});
+		}
+	</script>
+    <label class="uk-form-label uk-text-muted" for="form-stacked-select"> Active Customer</label>
+	<div class="uk-form-controls">
+	    <select onchange="onCustomerSelect(this)" class="uk-select uk-border-rounded" name="{{name}}">
+	    	{% for customer in customers %}
+			    <option class="truncate" value="{{customer.cust_id}}" 
+			    	{% if  customer.cust_id == active_customer %}
+					    selected 
+				{% endif %}
+			    > {{customer}} </option>
+			{% endfor %}
+	    </select>
+	</div>
+</div>
