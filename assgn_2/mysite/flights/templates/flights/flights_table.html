@@ -1,11 +1,4 @@
 {% for flight in flights %}
-	    	<!-- <tr>
-	            <td>{{flight.flight.airline.name}}</td>
-	            <td>{{flight.start_time}}</td>
-	            <td>{{flight.src_air.name}}</td>
-	            <td>{{flight.des_air.name}}</td>
-		        <td><button class="uk-button uk-button-secondary"> Book @ {{flight.fare}} </button></td>
-	        </tr> -->
 	<div>
 		<div class="uk-card uk-card-default">
 			<div class="uk-card-header uk-text-center">
@@ -49,5 +42,7 @@
 		    </div>
 		</div>
 	</div>
+
+{% empty %} 
+	No Flights at the moment
 {% endfor %} 
-  

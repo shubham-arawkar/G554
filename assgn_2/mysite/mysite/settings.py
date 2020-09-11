@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+import django_heroku
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
@@ -25,7 +27,7 @@ SECRET_KEY = '2v3t!n^3_d-dgqxa(a(vfcrw3bx+*$5$3t3dl3d-i*!at1z%uw'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['flights-3tier.herokuapp.com','localhost']
 
 
 # Application definition
@@ -53,6 +55,12 @@ MIDDLEWARE = [
     'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
+def show_toolbar(request):
+    return True
+DEBUG_TOOLBAR_CONFIG = {
+    "SHOW_TOOLBAR_CALLBACK" : show_toolbar,
+}
+
 ROOT_URLCONF = 'mysite.urls'
 
 TEMPLATES = [
@@ -77,12 +85,9 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+DATABASES = {}
+
+
 
 
 # Password validation
@@ -126,8 +131,8 @@ STATICFILES_DIRS = [
     BASE_DIR / "static"
 ]
 
+django_heroku.settings(locals())
+DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 
-INTERNAL_IPS = [
-    '127.0.0.1',
-    'localhost'
-]
+dj_database_url.config(conn_max_age=600)
+

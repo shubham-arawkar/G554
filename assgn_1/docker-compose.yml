@@ -11,6 +11,9 @@ services:
        MYSQL_DATABASE: assign1
        MYSQL_USER: user
        MYSQL_PASSWORD: user
+     ports:
+       - "3306:3306"
+
    phpmyadmin:
      depends_on:
        - db

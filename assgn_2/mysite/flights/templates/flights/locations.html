@@ -10,7 +10,7 @@
     {% for location in  locations %}
       <article class="uk-article">
           <h1 class="uk-article-title">{{location}}</h1>
-          <ul uk-accordion="collapsible: false">
+          <ul uk-accordion="collapsible: true">
             <li>
                 <a class="uk-accordion-title" href="#">Departure</a>
                 <div class="uk-accordion-content">
@@ -31,4 +31,5 @@
       </article>
     {% endfor %}
   </div>
+  <br>
 {% endblock %}

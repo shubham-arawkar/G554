@@ -11,8 +11,11 @@
 			    <h1 class="uk-article-title">{{airline.name}}</h1>
 			    {% for flight in airline.flight_set.all %}
 			    	{% flights_table flight.schedule_set.all %}
+			    {% empty %}
+			    	<div class="uk-text-center">No Flights At the Moment</div>
 			    {% endfor %}
 			</article>
 		{% endfor %}
 	</div>
+	<br>
 {% endblock %}
