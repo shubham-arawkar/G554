@@ -1,39 +1,55 @@
 version: '2'
 
 volumes:
-  yb-master-data-1:
-  yb-tserver-data-1:
-  yb-tserver-data-2:
-
+  yb-master-datad-1:
+  yb-master-datad-2:
+  yb-tserver-datad-1:
+  yb-tserver-datad-2:
+  yb-tserver-datad-3:
 services:
   yb-master:
       image: yugabytedb/yugabyte:latest
       container_name: yb-master-n1
       volumes:
-      - yb-master-data-1:/mnt/master
+      - yb-master-datad-1:/mnt/master
       command: [ "/home/yugabyte/bin/yb-master",
                 "--fs_data_dirs=/mnt/master",
-                "--master_addresses=yb-master-n1:7100",
+                "--master_addresses=yb-master-n1:7100,yb-master-n2:7100",
                 "--rpc_bind_addresses=yb-master-n1:7100",
-                "--replication_factor=1"]
+                "--replication_factor=2"]
       ports:
-      - "7000:7000"
+      - "0.0.0.0:7000:7000"
       environment:
         SERVICE_7000_NAME: yb-master
+  yb-master2:
+      image: yugabytedb/yugabyte:latest
+      container_name: yb-master-n2
+      volumes:
+      - yb-master-datad-2:/mnt/master
+      command: [ "/home/yugabyte/bin/yb-master",
+                "--fs_data_dirs=/mnt/master",
+                "--master_addresses=yb-master-n1:7100,yb-master-n2:7100",
+                "--rpc_bind_addresses=yb-master-n2:7100",
+                "--replication_factor=2"]
+      ports:
+      - "0.0.0.0:7001:7000"
+      environment:
+        SERVICE_7000_NAME: yb-master
+  
   yb-tserver:
       image: yugabytedb/yugabyte:latest
       container_name: yb-tserver-n1
       volumes:
-      - yb-tserver-data-1:/mnt/tserver
+      - yb-tserver-datad-1:/mnt/tserver
       command: [ "/home/yugabyte/bin/yb-tserver",
                 "--fs_data_dirs=/mnt/tserver",
                 "--start_pgsql_proxy",
                 "--rpc_bind_addresses=yb-tserver-n1:9100",
-                "--tserver_master_addrs=yb-master-n1:7100"]
+                "--tserver_master_addrs=yb-master-n1:7100,yb-master-n2:7100"]
       ports:
       - "9042:9042"
       - "5433:5433"
-      - "9000:9000"
+      - "0.0.0.0:9000:9000"
       environment:
         SERVICE_5433_NAME: ysql
         SERVICE_9042_NAME: ycql
@@ -41,28 +57,53 @@ services:
         SERVICE_9000_NAME: yb-tserver
       depends_on:
       - yb-master
+      - yb-master2
   
   yb-tserver2:
       image: yugabytedb/yugabyte:latest
       container_name: yb-tserver-n2
       volumes:
-      - yb-tserver-data-2:/mnt/tserver
+      - yb-tserver-datad-2:/mnt/tserver
       command: [ "/home/yugabyte/bin/yb-tserver",
                 "--fs_data_dirs=/mnt/tserver",
                 "--start_pgsql_proxy",
                 "--rpc_bind_addresses=yb-tserver-n2:9100",
-                "--tserver_master_addrs=yb-master-n1:7100"]
+                "--tserver_master_addrs=yb-master-n1:7100,yb-master-n2:7100"]
       ports:
       - "9043:9042"
       - "5434:5433"
-      - "9001:9000"
+      - "0.0.0.0:9001:9000"
       environment:
         SERVICE_5433_NAME: ysql
         SERVICE_9042_NAME: ycql
         SERVICE_6379_NAME: yedis
-        SERVICE_9000_NAME: yb-tserver2
+        SERVICE_9000_NAME: yb-tserver
       depends_on:
       - yb-master
+      - yb-master2
+
+  yb-tserver3:
+      image: yugabytedb/yugabyte:latest
+      container_name: yb-tserver-n3
+      volumes:
+      - yb-tserver-datad-3:/mnt/tserver
+      command: [ "/home/yugabyte/bin/yb-tserver",
+                "--fs_data_dirs=/mnt/tserver",
+                "--start_pgsql_proxy",
+                "--rpc_bind_addresses=yb-tserver-n3:9100",
+                "--tserver_master_addrs=yb-master-n1:7100,yb-master-n2:7100"]
+      ports:
+      - "9044:9042"
+      - "5435:5433"
+      - "0.0.0.0:9002:9000"
+      environment:
+        SERVICE_5433_NAME: ysql
+        SERVICE_9042_NAME: ycql
+        SERVICE_6379_NAME: yedis
+        SERVICE_9000_NAME: yb-tserver
+      depends_on:
+      - yb-master
+      - yb-master2
       
 
 
